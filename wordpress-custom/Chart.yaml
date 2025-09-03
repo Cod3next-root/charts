@@ -2,7 +2,7 @@ apiVersion: v2
 name: wordpress-custom
 description: WordPress personalizado con SSL automático para Rancher
 type: application
-version: 1.0.0
+version: 1.0.1
 appVersion: "6.4"
 keywords:
   - wordpress

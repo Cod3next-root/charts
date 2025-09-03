@@ -46,16 +46,20 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           livenessProbe:
             httpGet:
-              path: /
+              path: /wp-admin/install.php
               port: http
-            initialDelaySeconds: 120
-            timeoutSeconds: 5
+            initialDelaySeconds: 180
+            timeoutSeconds: 30
+            periodSeconds: 30
+            failureThreshold: 5
           readinessProbe:
             httpGet:
-              path: /
+              path: /wp-admin/install.php
               port: http
-            initialDelaySeconds: 30
-            timeoutSeconds: 5
+            initialDelaySeconds: 60
+            timeoutSeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
       volumes:
         - name: wordpress-storage
           persistentVolumeClaim:
@@ -126,8 +130,10 @@ spec:
                 - ping
                 - -h
                 - localhost
-            initialDelaySeconds: 30
-            timeoutSeconds: 5
+            initialDelaySeconds: 60
+            timeoutSeconds: 10
+            periodSeconds: 30
+            failureThreshold: 5
           readinessProbe:
             exec:
               command:
@@ -135,8 +141,10 @@ spec:
                 - ping
                 - -h
                 - localhost
-            initialDelaySeconds: 5
-            timeoutSeconds: 1
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
       volumes:
         - name: mysql-storage
           persistentVolumeClaim:
