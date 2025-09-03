@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "wordpress-custom.fullname" . }}
+  labels:
+    {{- include "wordpress-custom.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "wordpress-custom.selectorLabels" . | nindent 4 }}
+
+{{- if eq .Values.database.type "internal" }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "wordpress-custom.fullname" . }}-mysql
+  labels:
+    {{- include "wordpress-custom.labels" . | nindent 4 }}
+    app.kubernetes.io/component: database
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3306
+      targetPort: mysql
+      protocol: TCP
+      name: mysql
+  selector:
+    {{- include "wordpress-custom.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: database
+{{- end }}

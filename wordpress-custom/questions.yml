@@ -1,0 +1,141 @@
+questions:
+# Configuración básica
+- variable: app.domain
+  default: "wordpress.example.com"
+  description: "Dominio para WordPress (ej: miweb.com)"
+  type: string
+  required: true
+  label: "Dominio"
+  group: "Configuración Básica"
+
+- variable: app.title
+  default: "Mi WordPress"
+  description: "Título del sitio WordPress"
+  type: string
+  required: true
+  label: "Título del Sitio"
+  group: "Configuración Básica"
+
+- variable: app.adminUser
+  default: "admin"
+  description: "Usuario administrador de WordPress"
+  type: string
+  required: true
+  label: "Usuario Admin"
+  group: "Configuración Básica"
+
+- variable: app.adminPassword
+  default: ""
+  description: "Contraseña del administrador (mínimo 8 caracteres)"
+  type: password
+  required: true
+  label: "Contraseña Admin"
+  group: "Configuración Básica"
+
+- variable: app.adminEmail
+  default: "admin@example.com"
+  description: "Email del administrador"
+  type: string
+  required: true
+  label: "Email Admin"
+  group: "Configuración Básica"
+
+# SSL Configuration
+- variable: ssl.enabled
+  default: true
+  description: "Habilitar SSL automático con cert-manager"
+  type: boolean
+  label: "SSL Automático"
+  group: "SSL"
+
+- variable: ssl.issuer
+  default: "letsencrypt-prod"
+  description: "ClusterIssuer para certificados SSL"
+  type: string
+  label: "Issuer SSL"
+  group: "SSL"
+  show_if: "ssl.enabled=true"
+
+# Storage
+- variable: persistence.size
+  default: "10Gi"
+  description: "Tamaño del almacenamiento para WordPress"
+  type: string
+  label: "Tamaño Storage"
+  group: "Almacenamiento"
+
+- variable: persistence.storageClass
+  default: ""
+  description: "Storage Class (dejar vacío para default)"
+  type: storageclass
+  label: "Storage Class"
+  group: "Almacenamiento"
+
+# Database
+- variable: database.type
+  default: "internal"
+  description: "Tipo de base de datos"
+  type: enum
+  options:
+    - "internal"
+    - "external"
+  label: "Tipo de BD"
+  group: "Base de Datos"
+
+- variable: database.host
+  default: ""
+  description: "Host de la base de datos externa"
+  type: string
+  label: "Host BD Externa"
+  group: "Base de Datos"
+  show_if: "database.type=external"
+
+- variable: database.name
+  default: "wordpress"
+  description: "Nombre de la base de datos"
+  type: string
+  label: "Nombre BD"
+  group: "Base de Datos"
+
+- variable: database.user
+  default: "wordpress"
+  description: "Usuario de la base de datos"
+  type: string
+  label: "Usuario BD"
+  group: "Base de Datos"
+
+- variable: database.password
+  default: ""
+  description: "Contraseña de la base de datos"
+  type: password
+  label: "Contraseña BD"
+  group: "Base de Datos"
+
+# Resources
+- variable: resources.requests.memory
+  default: "512Mi"
+  description: "Memoria mínima requerida"
+  type: string
+  label: "Memoria Mínima"
+  group: "Recursos"
+
+- variable: resources.requests.cpu
+  default: "250m"
+  description: "CPU mínima requerida"
+  type: string
+  label: "CPU Mínima"
+  group: "Recursos"
+
+- variable: resources.limits.memory
+  default: "1Gi"
+  description: "Límite de memoria"
+  type: string
+  label: "Límite Memoria"
+  group: "Recursos"
+
+- variable: resources.limits.cpu
+  default: "500m"
+  description: "Límite de CPU"
+  type: string
+  label: "Límite CPU"
+  group: "Recursos"

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "wordpress-custom.fullname" . }}-config
+  labels:
+    {{- include "wordpress-custom.labels" . | nindent 4 }}
+data:
+  wordpress-title: {{ .Values.app.title | quote }}
+  wordpress-admin-user: {{ .Values.app.adminUser | quote }}
+  wordpress-admin-email: {{ .Values.app.adminEmail | quote }}
+  wordpress-domain: {{ .Values.app.domain | quote }}

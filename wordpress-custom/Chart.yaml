@@ -1,0 +1,16 @@
+apiVersion: v2
+name: wordpress-custom
+description: WordPress personalizado con SSL automático para Rancher
+type: application
+version: 1.0.0
+appVersion: "6.4"
+keywords:
+  - wordpress
+  - cms
+  - blog
+home: https://wordpress.org/
+sources:
+  - https://github.com/WordPress/WordPress
+maintainers:
+  - name: Tu Nombre
+    email: tu-email@example.com

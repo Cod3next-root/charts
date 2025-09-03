@@ -1,0 +1,58 @@
+app:
+  domain: "wordpress.example.com"
+  title: "Mi WordPress"
+  adminUser: "admin"
+  adminPassword: ""
+  adminEmail: "admin@example.com"
+
+image:
+  repository: wordpress
+  tag: "6.4-apache"
+  pullPolicy: IfNotPresent
+
+ssl:
+  enabled: true
+  issuer: "letsencrypt-prod"
+
+persistence:
+  enabled: true
+  size: "10Gi"
+  storageClass: ""
+  accessMode: ReadWriteOnce
+
+database:
+  type: "internal"  # internal o external
+  host: ""
+  name: "wordpress"
+  user: "wordpress"
+  password: ""
+  rootPassword: ""
+
+mysql:
+  image:
+    repository: mysql
+    tag: "8.0"
+  persistence:
+    enabled: true
+    size: "8Gi"
+    storageClass: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: "nginx"
+
+resources:
+  requests:
+    memory: "512Mi"
+    cpu: "250m"
+  limits:
+    memory: "1Gi"
+    cpu: "500m"
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

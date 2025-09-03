@@ -1,0 +1,124 @@
+# Ejemplos de configuración personalizada para valores comunes
+
+## Ejemplo 1: WordPress con base de datos externa
+```yaml
+app:
+  domain: "miweb.com"
+  title: "Mi Empresa"
+  adminUser: "webmaster"
+  adminPassword: "SuperSecure123!"
+  adminEmail: "webmaster@miweb.com"
+
+database:
+  type: "external"
+  host: "mysql.empresa.local"
+  name: "wordpress_prod"
+  user: "wp_user"
+  password: "DbPassword456!"
+
+ssl:
+  enabled: true
+  issuer: "letsencrypt-prod"
+
+persistence:
+  size: "50Gi"
+  storageClass: "fast-ssd"
+
+resources:
+  requests:
+    memory: "1Gi"
+    cpu: "500m"
+  limits:
+    memory: "2Gi"
+    cpu: "1000m"
+```
+
+## Ejemplo 2: WordPress de desarrollo/staging
+```yaml
+app:
+  domain: "dev.miweb.com"
+  title: "Mi Sitio - DEV"
+  adminUser: "admin"
+  adminPassword: "DevPassword123"
+  adminEmail: "dev@miweb.com"
+
+ssl:
+  enabled: true
+  issuer: "letsencrypt-staging"  # Certificados de staging
+
+persistence:
+  size: "5Gi"
+
+resources:
+  requests:
+    memory: "256Mi"
+    cpu: "100m"
+  limits:
+    memory: "512Mi"
+    cpu: "250m"
+```
+
+## Ejemplo 3: WordPress con alta disponibilidad
+```yaml
+app:
+  domain: "blog.empresa.com"
+  title: "Blog Corporativo"
+  adminUser: "editor"
+  adminPassword: "EditPassword789!"
+  adminEmail: "editor@empresa.com"
+
+database:
+  type: "external"
+  host: "mysql-ha.empresa.local"
+  name: "blog_prod"
+  user: "blog_user"
+  password: "ProdDbPass123!"
+
+persistence:
+  size: "100Gi"
+  storageClass: "premium-ssd"
+
+resources:
+  requests:
+    memory: "2Gi"
+    cpu: "1000m"
+  limits:
+    memory: "4Gi"
+    cpu: "2000m"
+
+# Para HA, también podrías añadir:
+nodeSelector:
+  node-type: "compute"
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      podAffinityTerm:
+        labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - wordpress-custom
+        topologyKey: kubernetes.io/hostname
+```
+
+## Ejemplo 4: WordPress multidominio
+Para múltiples instalaciones, puedes usar diferentes releases:
+
+```bash
+# Sitio principal
+helm install sitio-principal wordpress-custom/wordpress-custom -f valores-principal.yaml
+
+# Blog
+helm install blog wordpress-custom/wordpress-custom -f valores-blog.yaml
+
+# Tienda
+helm install tienda wordpress-custom/wordpress-custom -f valores-tienda.yaml
+```
+
+Donde cada archivo de valores tiene su propio dominio:
+- `valores-principal.yaml`: `app.domain: "empresa.com"`
+- `valores-blog.yaml`: `app.domain: "blog.empresa.com"`
+- `valores-tienda.yaml`: `app.domain: "tienda.empresa.com"`
